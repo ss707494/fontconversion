@@ -1,28 +1,15 @@
 const { registerFont, createCanvas, loadImage } = require('canvas')
 registerFont('fonts/tianyingzhang.ttf', { family: 'tianyingzhang' })
-const canvas = createCanvas(400, 200)
+const width = 500
+const height = 100
+const canvas = createCanvas(width, height)
 const ctx = canvas.getContext('2d')
 
-module.exports.getImg = function () {
+module.exports.getImg = function (text = '小胖子 哈哈哈') {
   return new Promise((resolve) => {
-// Write "Awesome!"
-    ctx.font = '15px tianyingzhang'
-    ctx.rotate(0.1)
-    ctx.fillText('说了KDJ方式看风景Awesome!', 50, 100)
-
-// Draw line under text
-    var text = ctx.measureText('Awesome!')
-    ctx.strokeStyle = 'rgba(0,0,0,0.5)'
-    ctx.beginPath()
-    ctx.lineTo(50, 102)
-    ctx.lineTo(50 + text.width, 102)
-    ctx.stroke()
-
-// Draw cat with lime helmet
-    loadImage('lime-cat.jpg').then((image) => {
-      ctx.drawImage(image, 50, 0, 70, 70)
-
-      resolve('<img src="' + canvas.toDataURL() + '" />')
-    })
+    ctx.clearRect(0, 0, width, height)
+    ctx.font = '25px tianyingzhang'
+    ctx.fillText(text, 0, height/2)
+    resolve('<img src="' + canvas.toDataURL() + '" />')
   })
 }
