@@ -1,14 +1,23 @@
+const path = require('path');
 const Koa = require('koa');
-const router = require('koa-route')
-const app = new Koa();
+const Router = require('koa-router')
+const static = require('koa-static')
 const { getImg } = require('./drawImg')
+const app = new Koa();
+const router = new Router()
 
-const get_Img = async ctx => {
-  const res = await getImg(ctx.params && ctx.params.text)
-  ctx.body = res || 'err';
+
+const get_Img = async (ctx, next) => {
+  ctx.body = await getImg(ctx.params && ctx.params.text)
+  await next()
 }
 
+const staticPath = '../build'
+app.use(static(
+    path.join( __dirname,  staticPath)
+))
+
 // response
-app.use(router.get('/', get_Img));
+app.use(router.get('/getImg/:text', get_Img).routes());
 
 app.listen(4410);

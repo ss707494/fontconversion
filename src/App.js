@@ -5,6 +5,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import './App.scss';
 
@@ -19,31 +20,36 @@ class App extends Component {
   state = {
     font: '',
     content: '',
+    imgSrc: '',
   }
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   }
+
   handleChangeContent = e => {
     this.setState({
       content: e.target.value
     })
   }
 
-  componentDidMount() {
-    const canvas = document.getElementById('textBoxC');
-    const ctx=canvas.getContext("2d");
-    ctx.font="40px tianyingzhang";
-    ctx.fillText("Hello World",10,50);
+  handleGetImg = async e => {
+    const res = await fetch('/getImg/' + this.state.content)
+    const json = await res.json()
+    this.setState({
+      imgSrc: json.src,
+    })
   }
+
+  componentDidMount() {
+  }
+
   render() {
     const { classes } = this.props;
     return (
         <div className="App">
-          <div className={classes.textBox}>{this.state.content}</div>
           <div className={classes.textBox}>
-            <canvas id="textBoxC">
-            </canvas>
+            <img src={this.state.imgSrc} alt=""/>
           </div>
           <div>
             <div>
@@ -74,6 +80,11 @@ class App extends Component {
                 <MenuItem value={30}>Thirty</MenuItem>
               </Select>
             </FormControl>
+            <div>
+              <Button variant="outlined" color="primary" onClick={this.handleGetImg}>
+                转换
+              </Button>
+            </div>
           </div>
         </div>
     );
