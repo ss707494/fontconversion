@@ -8,7 +8,7 @@ const router = new Router()
 
 
 const get_Img = async (ctx, next) => {
-  ctx.body = await getImg(ctx.params && ctx.params.text)
+  ctx.body = await getImg(ctx.params && ctx.params.text, ctx.request.query)
   await next()
 }
 
